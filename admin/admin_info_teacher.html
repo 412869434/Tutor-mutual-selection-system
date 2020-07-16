@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>导师双向选择系统</title>
+    <link href="../lib/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        h1{
+            margin: 20px 50px 10px 20px;
+        }
+        #pname{
+            margin-top:25px;
+            margin-right: 50px;
+            font-size: 18px;
+        }
+        #pbtn{
+            margin-top:10px;
+            margin-right: 10px;
+        }
+        #nav_font{
+            font-size: 17px;
+            font-weight:600;
+        }
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            margin-bottom: 60px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            background-color: #f5f5f5;
+        }
+
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="navbar-header">
+            <h1>导师双向选择系统</h1>
+        </div>
+        
+        <div class="navbar-right" id="pbtn">
+            <input type="button" class="btn btn-default" value="退出" id="pbtn">
+        </div>
+
+        <div class="navbar-right" id="pname">
+            <p id="uName" style="font-size:18px"></p>
+            <form id="nameForm">
+                <input type="hidden" name="uid" id="uUid">
+            </form>
+        </div>
+  
+    </nav>
+    <div class="container">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand">选项</a>
+                </div>
+                <div id="nav_font">
+                    <ul class=" nav navbar-nav" id="mytab">
+                    
+                        <li ><a href="javascript:;" class="jump" var="toIndex">首页</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                查看信息
+                                <span class=" caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="javascript:;" class="jump" var="toStuInfo">学生信息</a></li>
+                                <li class="divider"></li> 
+                                <li><a href="javascript:;" class="jump" var="toTeaInfo">导师信息</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                双向选择
+                                <span class=" caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li> <a href="javascript:;" class="jump" var="toFirst"> 第一轮</a></li>
+                                <li class="divider"></li>
+                                <li> <a href="javascript:;" class="jump" var="toSecond"> 第二轮</a></li>
+                                <li class="divider"></li>
+                                <li> <a href="javascript:;" class="jump" var="toThird"> 管理员分配</a></li>
+                                <li class="divider"></li>
+                                <li> <a href="javascript:;" class="jump" var="toConfirm"> 导师确认</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                时间确认
+                                <span class=" caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li> <a href="javascript:;" class="jump" var="toFormula">时间设置</a></li>
+                                <li class="divider"></li>
+                                <li data-toggle="modal" data-target="#publish"> <a href="#">结果公布</a></li>
+                            </ul>
+                        </li>
+                        <li data-toggle="modal" data-target="#myModal"> <a href="#"> 修改密码</a></li>
+
+                    </ul>
+                </div>
+            </div>   
+        </nav>
+    </div>
+
+    <div class="modal fade" id="publish" tabindex="-1" role="form" aria-labelledby="publish">
+        <div class=" modal-dialog">
+            <div class=" modal-content">
+                <div class=" header" style="background-color: #4682B4;height: 50px;">
+                    <button type="button" class="close btn-warning" data-dismiss="modal" aria-hidden="true" style="color: white;">
+                        &times;
+                    </button>
+                    <label style="font-size: 22px;margin: 10px 10px auto;color: white;">确认提交</label>
+                </div>
+                <div class="modal-body">
+                    <form id="publishform">
+                        <div class=" form-group">
+                            <p class="alert alert-danger" style="font-size: 18px;">在公示期结束之后，确认所有的信息没有错误，再点击提交<br>并且一般情况下不再修改</p>
+                        </div>
+                        <input type="button" id="publishBtn" class="btn btn-primary col-md-offset-10" value="提交确认">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="form" aria-labelledby="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="header" style="background-color: #4682B4;height: 50px;">
+                    <button type="button" class="close btn-warning" data-dismiss="modal" aria-hidden="true" style="color: white;">
+                        &times;
+                    </button>
+                    <h2 class="modal-title text-center" id="myModalLabel" style="color: white;">
+                        修改密码
+                    </h2>
+                </div>
+                <div class="modal-body">
+                    <form id="updateform">
+                        <div class=" form-group">
+                            <label for="prepass" class=" control-label">旧密码：</label>
+                            <input type="password" class=" form-control" id="prepass" name="prepass">
+                        </div>
+                        <div class=" form-group">
+                            <label for="newpass" class=" control-label">新密码：</label>
+                            <input type="password" class=" form-control" id="newpass" name="newpass">
+                        </div>
+                        <div class=" form-group">
+                            <label for="repeatpass" class=" control-label">重复密码：</label>
+                            <input type="password" class=" form-control" id="repeatpass" name="repeatpass">
+                        </div>
+                        <div class="row">
+                            <span id="returnMessage" class="glyphicon col-lg-6 text-danger"></span>
+                            <button type="button" class="btn btn-default right col-lg-offset-3" data-dismiss="modal">关闭</button>
+                            <button id="submitBtn" type="button" class="btn btn-primary">修改</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div>
+            <table class="table table-bordered" id="myTable">
+                <caption class="row">
+                    <label style="font-size: 20px;" class="col-md-2">导师名单</label>
+                    <div class="col-md-offset-6 col-md-2">
+                        <input type="text" class="form-control" id="searchText">
+                    </div>
+                    <div class="col-md-2"> 
+                        <input type="button" class="btn btn-primary" value="搜索" id="searchBtn">
+                    </div>
+                </caption>
+
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>职称</th>
+                        <th>部门</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+
+                <tbody id="searchTable_body">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- <button class="btn btn-default col-md-offset-6" data-toggle="modal" data-target="#tableid">样例</button>  -->
+    <div class="modal fade" id="tableid" tabindex="-1" role="dialog" aria-labelledby="tableid" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class=" col-md-3" style="font-size: 20px;"><strong>学生信息</strong></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="media">
+                        <div class=" media-body">
+                            <div class=" media-top " style="margin-left: 10px;">
+                                <div class="row">
+                                    <label class=" col-xs-3">姓名：</label>
+                                    <p class=" col-xs-3" id="t_name"></p>
+                                </div><br>
+                                <div class="row">
+                                    <label class=" col-xs-3">部门：</label>
+                                    <p class=" col-xs-3" id="t_department"></p>
+                                </div><br>
+                                <div class="row">
+                                    <label class=" col-xs-3" >职称：</label>
+                                    <p class=" col-xs-3" id="t_title"></p>
+                                </div><br>
+                                <div class="row">
+                                    <label class=" col-xs-3" >预带人数：</label>
+                                    <p class=" col-xs-3" id="t_number"></p>
+                                </div>
+                            </div>
+                        </div><br>
+                            <div class=" media-bottom" style="margin-left: 25px;">
+                                <div class="row">
+                                    <label>研究方向：</label>
+                                    <p id="t_way"></p>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer style="background-color:#4682B4; height: 40px;" class="footer">
+        <span>
+            <p class=" text-center" style="color: white;font-size: 17px;margin-top: 5px;">Copyright &nbsp;&copy; 2020</p>
+        </span>
+    </footer>
+
+
+    <script type="text/javascript" src="../lib/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap.min.js"></script>
+
+    <script>
+        $(function(){
+
+            function oneValues(){
+        		var result;
+        		var url=window.location.search; //获取url中"?"符后的字串  
+        		if(url.indexOf("?")!=-1){
+        			result = url.substr(url.indexOf("=")+1);
+        		}
+        		return result;
+        	}
+        	
+            $("#uName").html(oneValues());
+            $("#uUid").val(oneValues());
+
+            $.ajax({
+                type : "POST",
+                url : "../AdminServlet/userList",  //url对一下
+                dataType : "json",
+                async : false,
+                success : function(ress){
+                    console.log(ress);
+                    var res=ress.data;
+                    var html ="";
+                    for(var i=0;i<res.length;i++){
+                    	html += "<tr>";
+                        html +=     "<td>" + res[i].name + "</td>";
+                        html +=     "<td>" + res[i].department + "</td>";
+                        html +=     "<td>" + res[i].direction + "</td>";
+                        html +=     "<td>" + " <input type='button' class='btn btn-primary find' value='查看' var=" + res[i].number + " data-toggle='modal' data-target='#tableid'> " + "</td>";
+                        html += "</tr>";
+                    }
+                    $("#searchTable_body").html(html);
+                },
+                error:function(e){
+                    console.log(e);
+                }
+            })
+
+            $(".find").on("click",function(){
+            	var getNumber = $(this).attr("var");
+            	console.log(getNumber);
+            	$.ajax({
+            		type : "POST",
+                	url : "../AdminServlet/findTea",
+                	data : {"number":getNumber},
+                	dataType : "json",
+                	async : false,
+                	success : function(ress){
+                		console.log(ress);
+                		var res=ress.data;
+                		$("#t_name").text(res.name);
+                		$("#t_department").text(res.department);
+                		$("#t_title").text(res.title);
+                		$("#t_number").text(res.maxnumber);
+                		$("#t_way").text(res.direction);
+                		
+                	},
+                	error:function(e){
+                        console.log(e);
+                    }
+            	})
+            })
+
+            $(".jump").on("click",function(){
+                var diff =$(this).attr("var");
+                if(diff == "toIndex"){
+                    $(this).attr("href","admin_index.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toStuInfo"){
+                    $(this).attr("href","admin_info_student.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toTeaInfo"){
+                    $(this).attr("href","admin_info_teacher.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toFirst"){
+                    $(this).attr("href","admin_choose_first.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toFormula"){
+                    $(this).attr("href","admin_formula.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toSecond"){
+                    $(this).attr("href","admin_choose_second.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toThird"){
+                    $(this).attr("href","admin_choose_third.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toConfirm"){
+                    $(this).attr("href","admin_choose_confirm.html"+"?numbers="+oneValues());
+                }
+            })
+
+            $("#searchBtn").click(function () {
+                var $sea=$('#searchText').val();
+                $('table tbody tr').hide().filter(':contains('+$sea+')').show();
+            });
+
+            $("#pbtn").click(function(){
+                window.location.href="../index.html";
+            })
+
+            $("#submitBtn").click(function(){
+                if($("#newpass").val() != $("#repeatpass").val()){
+                    $("#returnMessage").text("重复密码不一致!")
+                }
+                else{
+                    if($("#newpass").val().length<6){
+                        $("#returnMessage").text("密码太简单！");
+                    }
+                    else{
+                        var datas = {
+                            "number" : oneValues(),
+                            "password" : $("#prepass").val(),
+                            "newpassword" : $("#newpass").val()
+                        }
+                        $.ajax({
+                            type : "POST",
+                            url : "../AdminServlet/updatePwd",
+                            data : datas,
+                            success : function(res){
+                                if(res.flag){
+                                    $("#returnMessage").text("修改密码成功！");
+                                }
+                                else{
+                                    $("#returnMessage").text("修改密码失败！");
+                                }
+                                console.log(res);
+                            },
+                            error : function(e){
+                                console.log(e);
+                            }
+                        })
+                    }      
+                }
+            })
+            
+            $("#publishBtn").click(function(){
+            	$.ajax({
+            		type : "POST",
+            		url : "../AdminServlet/changeToOver",
+            		success : function(res){
+            			console.log(res);
+            		},
+            		error: function(e){
+            			console.log(e);
+            		}
+            	})
+            })
+
+        })
+        
+    </script>
+</body>
+</html>

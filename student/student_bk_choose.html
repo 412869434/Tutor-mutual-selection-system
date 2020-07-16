@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>导师双向选择系统</title>
+    <link href="../lib/bootstrap.min.css" rel="stylesheet">
+    <link href="../lib/bootstrap-table.min.css" rel="stylesheet">
+
+    <style>
+        h1{
+            margin: 20px 50px 10px 20px;
+        }
+        #pname{
+            margin-top:25px;
+            margin-right: 50px;
+            font-size: 18px;
+        }
+        #pbtn{
+            margin-top:10px;
+            margin-right: 10px;
+        }
+        #nav_font{
+            font-size: 17px;
+            font-weight:600;
+        }
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            margin-bottom: 60px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            background-color: #f5f5f5;
+        }
+
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="navbar-header">
+            <h1>导师双向选择系统</h1>
+        </div>
+        
+        <div class="navbar-right" id="pbtn">
+            <input type="button" class="btn btn-default" value="退出" id="pbtn">
+        </div>
+
+        <div class="navbar-right" id="pname">
+            <p id="uName" style="font-size:18px"></p>
+            <form id="nameForm">
+                <input type="hidden" name="uid" id="uUid">
+            </form>
+        </div>
+  
+    </nav>
+    <div class="container">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand">选项</a>
+                </div>
+                <div id="nav_font">
+                    <ul class=" nav navbar-nav" id="mytab">                       
+                        <li ><a href="javascript:;" class="jump" var="toIndex">首页</a></li>
+                        <li ><a href="javascript:;" class="jump" var="myTeacher">我的导师</a></li>
+                        <li ><a href="javascript:;" class="jump" var="toFormula">公示信息</a></li>
+
+                        <li ><a href="javascript:;" class="jump" var="toUnder"> 导师选择</a></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                	个人信息
+                                <span class=" caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li> <a href="javascript:;" var="findInfo" class="jump"> 查询信息</a></li>
+                                <li class="divider"></li>
+                                <li> <a href="javascript:;" var="changeInfo" class="jump"> 修改信息</a></li>
+                                <li class="divider"></li>
+                                <li data-toggle="modal" data-target="#myModal"> <a href="#"> 修改密码</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>   
+        </nav>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="form" aria-labelledby="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="header" style="background-color: #4682B4;height: 50px;">
+                    <button type="button" class="close btn-warning" data-dismiss="modal" aria-hidden="true" style="color: white;">
+                        &times;
+                    </button>
+                    <h2 class="modal-title text-center" id="myModalLabel" style="color: white;">
+                        修改密码
+                    </h2>
+                </div>
+                <div class="modal-body">
+                    <form id="updatePwdForm">
+                        <div class=" form-group">
+                            <label for="prepass" class=" control-label">旧密码：</label>
+                            <input type="password" class=" form-control" id="prepass" name="prepass">
+                        </div>
+                        <div class=" form-group">
+                            <label for="newpass" class=" control-label">新密码：</label>
+                            <input type="password" class=" form-control" id="newpass" name="newpass">
+                        </div>
+                        <div class=" form-group">
+                            <label for="repeatpass" class=" control-label">重复密码：</label>
+                            <input type="password" class=" form-control" id="repeatpass" name="repeatpass">
+                        </div>
+                        <div class="row">
+                            <span id="returnMessage" class="glyphicon col-lg-6 text-danger"></span>
+                            <button type="button" class="btn btn-default right col-lg-offset-3" data-dismiss="modal">关闭</button>
+                            <button id="submitBtn" type="button" class="btn btn-primary">修改</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <form>
+            <div class=" form-group">
+                <table class=" table table-hover" id="searchTable">
+                    <caption style="font-size: 20px;">
+                        <p class=" col-md-1">导师</p>
+                        <div class="col-md-3 col-md-offset-7">
+                            <input type="text" name="searchText" id="searchText" class=" form-control" placeholder="请输入搜索内容">
+                        </div>
+                        <div class=" col-md-1">
+                            <button type="button" class="btn btn-primary" id="searchBtn">
+                                <span >搜索</span>
+                            </button>
+                        </div>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>&nbsp; &nbsp; 姓名</th>
+                            <th>部门</th>
+                            <th>研究方向</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="searchTable_body">
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row">
+                <select class="col-md-1 form-control col-md-offset-9" style="width: 150px; margin-right: 10px;" id="find_vol">
+                    <option value="first">第一志愿</option>
+                    <option value="second">第二志愿</option>
+                </select>
+                <input type="button" name="choose" class="btn btn-primary subVol" value="提交" style="width: 100px;" var="find_subVol">
+            </div>
+
+        </form>
+        
+    </div>
+
+
+  <!--  <button class="btn btn-default col-md-offset-6" data-toggle="modal" data-target="#tableid">样例</button>  -->
+
+    <div class="modal fade" id="tableid" tabindex="-1" role="dialog" aria-labelledby="tableid" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class=" col-md-3" style="font-size: 20px;"><strong>导师信息</strong></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="media">
+                        <div class="media-left media-top">                 
+                            <img class=" media-object" style="background-color: #4682B4;width: 150px;height: 200px;">
+                        </div>
+                        <div class=" media-body">
+                            <div class=" media-top " style="margin-left: 10px;">
+                                <div class="row">
+                                    <label class=" col-xs-3">姓名：</label>
+                                    <p class=" col-xs-3" id="t_name"></p>
+                                </div><br>
+                                <div class="row">
+                                    <label class=" col-xs-3">部门：</label>
+                                    <p class=" col-xs-3" id="t_department"></p>
+                                </div><br>
+                                <div class="row">
+                                    <label class=" col-xs-3" >职称：</label>
+                                    <p class=" col-xs-3" id="t_title"></p>
+                                </div><br>
+                                <div class="row">
+                                    <label class=" col-xs-3" >预带人数：</label>
+                                    <p class=" col-xs-3" id="t_number"></p>
+                                </div>
+                                <input type="hidden" id="t_num">
+                            </div>
+                        </div><br>
+                            <div class=" media-bottom" style="margin-left: 25px;">
+                                <div class="row">
+                                    <label>研究方向：</label>
+                                    <p id="t_way"></p>
+                                </div>
+                            </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <select class="col-md-1 form-control" style="width: 400px;" id="_vol">
+                                    <option value="first">第一志愿</option>
+                                    <option value="second">第二志愿</option>
+                                </select>
+                                <input type="button" name="choose" class="btn btn-primary subVol" value="提交" style="width: 100px;" var="_subVol">
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer style="background-color:#4682B4; height: 40px;" class="footer">
+        <span>
+            <p class=" text-center" style="color: white;font-size: 17px;margin-top: 5px;">Copyright &nbsp;&copy; 2020</p>
+        </span>
+    </footer>
+
+
+    <script type="text/javascript" src="../lib/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap.min.js"></script>
+    <script src="../lib/bootstrap-table.min.js"></script>
+
+    <script>
+        
+        $(document).ready(function(){
+
+            function oneValues(){
+                var result;
+                var url=window.location.search; //获取url中"?"符后的字串  
+                if(url.indexOf("?")!=-1){
+                    result = url.substr(url.indexOf("=")+1);
+                }
+                return result;
+            }
+        	
+        	$("#uName").html(oneValues());
+            $("#uUid").val(oneValues());
+            
+            $(".subVol").click(function(){
+            	var getDiff = $(this).attr("var");
+            	var seq="";
+            	var teaNum="";
+            	if(getDiff=="find_subVol"){
+            		seq=$("#find_vol option:selected").val();
+            		teaNum=$("#t_num").val();
+            	}
+            	else if(getDiff=="_subVol"){
+            		seq=$("#_vol option:selected").val();
+            		teaNum=$("input:radio:checked").val();
+            	}
+                console.log($("#_vol option:selected").val());
+                console.log($("input:radio:checked").val());
+                $.ajax({
+                    type : "POST",
+                    url : "../StuServlet/Volunteer",  //请求地址为学生信息
+                    data : {"StuNumber":oneValues(),
+                            "Sequence":seq,
+                            "TeaNumber":teaNum},
+                    dataType : "json",
+                    async : false,
+                    success : function(res){
+                        console.log(res);
+                        if(res.flag){
+                            alert("提交成功！");
+                        }
+                        else{
+                            alert("重复提交！");
+                        }
+                    },
+                    error:function(e){
+                        console.log(e);
+                    }
+                })  
+            })
+              
+            $.ajax({
+                type : "POST",
+                url : "../StuServlet/userList",
+                data : {"number":oneValues()},
+                dataType : "json",
+                async : false,
+                success : function(res){
+                    console.log(res);
+                    var html ="";
+                    for(var i=0;i<res.length;i++){
+                    	html += "<tr>";
+                        html +=     "<td>" + "<input type='radio' name='TeaNumber' value=" +res[i].number +">" + res[i].name + "</td>";
+                        html +=     "<td>" + res[i].department + "</td>";
+                        html +=     "<td>" + res[i].direction + "</td>";
+                        html +=     "<td>" + " <input type='button' class='btn btn-primary find' value='查看' var=" + res[i].number + " data-toggle='modal' data-target='#tableid'> " + "</td>";
+                        html += "</tr>";
+                    }
+                    $("#searchTable_body").html(html);
+                },
+                error:function(e){
+                    console.log(e);
+                }
+            })
+
+            $(".find").on("click",function(){
+            	var getNumber = $(this).attr("var");
+            	console.log(getNumber);
+            	$.ajax({
+            		type : "POST",
+                	url : "../StuServlet/findTea",
+                	data : {"number":getNumber},
+                	dataType : "json",
+                	async : false,
+                	success : function(res){
+                		console.log(res);
+                		$("#t_name").text(res.name);
+                		$("#t_department").text(res.department);
+                		$("#t_title").text(res.title);
+                		$("#t_number").text(res.maxnumber);
+                		$("#t_way").text(res.direction);
+                		$("#t_num").val(getNumber);
+                	},
+                	error:function(e){
+                        console.log(e);
+                    }
+            	})
+            })
+            
+            $("#searchBtn").click(function () {
+                var $sea=$('#searchText').val();
+                $('table tbody tr').hide().filter(':contains('+$sea+')').show();
+            });
+
+            
+
+            $("#pbtn").click(function(){
+                window.location.href="../index.html";
+            })
+
+            $("#submitBtn").click(function(){
+                if($("#newpass").val() != $("#repeatpass").val()){
+                    $("#returnMessage").text("重复密码不一致!")
+                }
+                else{
+                	if($("#newpass").val().length<6){
+                        $("#returnMessage").text("密码太简单！");
+                    }
+                    else{
+                        var datas = {
+                            "number" : oneValues(),
+                            "password" : $("#prepass").val(),
+                            "newpassword" : $("#newpass").val()
+                        }
+                        $.ajax({
+                            type : "POST",
+                            url : "../StuServlet/updatePwd",
+                            data : datas,
+                            success : function(res){
+                                if(res.flag){
+                                    $("#returnMessage").text("修改密码成功！");
+                                }
+                                else{
+                                    $("#returnMessage").text("修改密码失败！");
+                                }
+                                console.log(res);
+                            },
+                            error : function(e){
+                                console.log(e);
+                            }
+                        })
+                    }      
+                }
+            })
+ 
+            $(".jump").on("click",function(){
+                var diff =$(this).attr("var");
+                if(diff == "findInfo"){
+                    $(this).attr("href","student_info.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "changeInfo"){
+                    $(this).attr("href","student_info_change.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toIndex"){
+                    $(this).attr("href","student_index.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "myTeacher"){
+                    $(this).attr("href","student_myteacher.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toFormula"){
+                    $(this).attr("href","student_formula.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toUnder"){
+                    $(this).attr("href","student_bk_choose.html"+"?numbers="+oneValues());
+                }
+            })
+
+        })
+        
+    </script>
+</body>
+</html>

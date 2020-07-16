@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>导师双向选择系统</title>
+<link href="../lib/bootstrap.min.css" rel="stylesheet">
+
+<style>
+	h1 {
+		margin: 20px 50px 10px 20px;
+	}
+
+	#pname {
+		margin-top: 25px;
+		margin-right: 50px;
+		font-size: 18px;
+	}
+
+	#pbtn {
+		margin-top: 10px;
+		margin-right: 10px;
+	}
+
+	#nav_font {
+		font-size: 17px;
+		font-weight: 600;
+	}
+
+	html {
+		position: relative;
+		min-height: 100%;
+	}
+
+	body {
+		margin-bottom: 60px;
+	}
+
+	.footer {
+		position: absolute;
+		bottom: 0;
+		left: 0px;
+		width: 100%;
+		height: 50px;
+		background-color: #f5f5f5;
+	}
+
+	#hx {
+		background-color: black;
+		height: 1px;
+	}
+</style>
+
+</head>
+<body>
+	<nav class="navbar navbar-dark bg-primary">
+		<div class="navbar-header">
+			<h1>导师双向选择系统</h1>
+		</div>
+
+		<div class="navbar-right" id="pbtn">
+			<input type="button" class="btn btn-default" value="退出" id="pbtn">
+		</div>
+
+		<div class="navbar-right" id="pname">
+			<p id="uName" style="font-size:18px"></p>
+            <form id="nameForm">
+                <input type="hidden" name="uid" id="uUid">
+            </form>
+		</div>
+
+	</nav>
+	<div class="container">
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand">选项</a>
+				</div>
+				<div id="nav_font">
+					<ul class=" nav navbar-nav" id="mytab">
+
+						<li ><a href="javascript:;" class="jump" var="toIndex">首页</a></li>
+                        <li ><a href="javascript:;" class="jump" var="myTeacher">我的导师</a></li>
+                        <li ><a href="javascript:;" class="jump" var="toFormula">公示信息</a></li>
+
+						<li ><a href="javascript:;" class="jump" var="toUnder"> 导师选择</a></li>
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"> 个人信息 <span class=" caret"></span>
+						</a>
+							<ul class="dropdown-menu" role="menu">
+								<li> <a href="javascript:;" var="findInfo" class="jump"> 查询信息</a></li>
+                                <li class="divider"></li>
+                                <li> <a href="javascript:;" var="changeInfo" class="jump"> 修改信息</a></li>
+								<li class="divider"></li>
+								<li data-toggle="modal" data-target="#myModal"><a href="#">
+										修改密码</a></li>
+							</ul></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="form"
+		aria-labelledby="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="header" style="background-color: #4682B4; height: 50px;">
+					<button type="button" class="close btn-warning"
+						data-dismiss="modal" aria-hidden="true" style="color: white;">
+						&times;</button>
+					<h2 class="modal-title text-center" id="myModalLabel"
+						style="color: white;">修改密码</h2>
+				</div>
+				<div class="modal-body">
+					<form id="updatePwdForm">
+						<div class=" form-group">
+							<label for="prepass" class=" control-label">旧密码：</label> <input
+								type="password" class=" form-control" id="prepass"
+								name="prepass">
+						</div>
+						<div class=" form-group">
+							<label for="newpass" class=" control-label">新密码：</label> <input
+								type="password" class=" form-control" id="newpass"
+								name="newpass">
+						</div>
+						<div class=" form-group">
+							<label for="repeatpass" class=" control-label">重复密码：</label> <input
+								type="password" class=" form-control" id="repeatpass"
+								name="repeatpass">
+						</div>
+						<div class="row">
+                            <span id="returnMessage" class="glyphicon col-lg-6 text-danger"></span>
+                            <button type="button" class="btn btn-default right col-lg-offset-3" data-dismiss="modal">关闭</button>
+                            <button id="submitBtn" type="button" class="btn btn-primary">修改</button>
+                        </div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container">
+		<div class="row">
+			<h2 class="col-lg-3">
+				<b>公示期：</b><small>你的导师信息</small>
+			</h2>
+			<div class="col-lg-6" id="tishi">           	
+            </div>
+		</div>
+		<div id="hx"></div>
+		<br>
+		<div class=" media">
+			<div class=" media-body">
+				<div class="row">
+					<table class=" table col-md-3 col-md-offset-1 table-bordered"style="width: 150px;">
+						<tbody>
+							<tr>
+								<td>姓名</td>
+							</tr>
+							<tr>
+								<td>职称</td>
+							</tr>
+							<tr>
+								<td>部门</td>
+							</tr>
+							<tr>
+								<td>办公室</td>
+							</tr>
+							<tr>
+								<td>电子邮箱</td>
+							</tr>
+							<tr>
+								<td>QQ</td>
+							</tr>
+							<tr>
+								<td>手机号码</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table class=" table col-md-3 table-bordered" style="width: 350px;">
+						<tbody>
+							<tr>
+                                <td id="_name" style="height: 36.8px;"></td>
+                            </tr>
+                            <tr>
+                                <td id="_title" style="height: 36.8px;"></td>
+                            </tr>
+                            <tr>
+                                <td id="_department" style="height: 36.8px;"></td>
+                            </tr>
+                            <tr>
+                                <td id="_adress" style="height: 36.8px;"></td>
+                            </tr>
+                            <tr>
+                                <td id="_email" style="height: 36.8px;"></td>
+                            </tr>
+                            <tr>
+                                <td id="_qq" style="height: 36.8px;"></td>
+                            </tr>
+                            <tr>
+                                <td id="_phone" style="height: 36.8px;"></td>
+                            </tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class=" media-right media-top">
+				<img class=" media-object"
+					style="width: 150px; height: 200px; background-color: #4682B4;">
+			</div>
+		</div>
+
+		<br>
+
+		<div class=" col-md-offset-1">
+			<label style="font-size: 17px;"><b>研究方向：</b></label>
+			<p style="font-size: 16px;" id="_direction"></p>
+		</div>
+
+	</div>
+
+	<br>
+	<div class=" col-md-2 col-md-offset-8">
+		<button class="btn btn-danger" data-toggle="modal"
+			data-target="#myPro" style="width: 100px;">反馈</button>
+	</div>
+	<br>
+	<br>
+
+	<div class="modal fade" id="myPro" tabindex="-1" role="dialog"
+		aria-labelledby="myPro" aria-hidden="true">
+		<form id="feedForm">
+			<div class="modal-dialog">
+				<div class=" modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myProLabel">管理员联系方式：</h4>
+					</div>
+
+					<div class=" modal-body alert alert-info" style="font-size: 19px;">
+						<label>QQ: &nbsp;&nbsp;</label><label id="admin_qq">1234125454</label><br><br>
+						<label>邮箱: &nbsp;</label><label id="admin_email">1234125454@qq.com</label><br><br>
+						<label>电话: &nbsp;</label><label id="admin_phone">1234125454</label>
+					</div>
+
+				</div>
+			</div>
+		</form>
+
+	</div>
+
+
+	<footer style="background-color: #4682B4; height: 40px;" class="footer">
+		<span>
+			<p class=" text-center"
+				style="color: white; font-size: 17px; margin-top: 5px;">Copyright&nbsp;&copy; 2020</p>
+		</span>
+	</footer>
+
+
+	<script type="text/javascript" src="../lib/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../lib/bootstrap.min.js"></script>
+
+	<script>
+
+		$(document).ready(function() {
+
+			function oneValues() {
+				var result;
+				var url = window.location.search; //获取url中"?"符后的字串  
+				if (url.indexOf("?") != -1) {
+					result = url.substr(url.indexOf("=") + 1);
+				}
+				return result;
+			}
+
+			$("#uName").html(oneValues());
+			$("#uUid").val(oneValues());
+
+			$.ajax({
+				type : "POST",
+				url : "../StuServlet/ShowTime",
+				data : {"number":oneValues()},
+				dataType : "json",
+				async : false,
+				success : function(result){
+					console.log(result);
+					var res = result.data;
+					if(result.flag){
+						$("#_name").html(res.name);
+                        $("#_title").html(res.title);
+                        $("#_department").html(res.department);
+                        $("#_adress").html(res.adress);
+                        $("#_direction").html(res.direction);
+                        $("#_email").html(res.email);
+                        $("#_phone").html(res.phone);
+                        $("#_qq").html(res.qq);
+					}
+					else{
+                    	var hl = "";
+                    	hl+="<p class='alert alert-danger'>未到公示期</p>";
+                    	$("#tishi").html(hl);
+                    }
+				},
+				error:function(e){
+					console.log(e);
+				}
+			})
+
+			$("#pbtn").click(function() {
+				window.location.href = "../index.html";
+			})
+
+			$("#submitBtn").click(function(){
+                if($("#newpass").val() != $("#repeatpass").val()){
+                    $("#returnMessage").text("重复密码不一致!")
+                }
+                else{
+                	if($("#newpass").val().length<6){
+                        $("#returnMessage").text("密码太简单！");
+                    }
+                    else{
+                        var datas = {
+                            "number" : oneValues(),
+                            "password" : $("#prepass").val(),
+                            "newpassword" : $("#newpass").val()
+                        }
+                        $.ajax({
+                            type : "POST",
+                            url : "../StuServlet/updatePwd",
+                            data : datas,
+                            success : function(res){
+                                if(res.flag){
+                                    $("#returnMessage").text("修改密码成功！");
+                                }
+                                else{
+                                    $("#returnMessage").text("修改密码失败！");
+                                }
+                                console.log(res);
+								$("#prepass").val("");
+                                $("#newpass").val("");
+                            },
+                            error : function(e){
+                                console.log(e);
+                            }
+                        })
+                    }      
+                }
+            })
+
+			$(".jump").on("click",function(){
+                var diff =$(this).attr("var");
+                if(diff == "findInfo"){
+                    $(this).attr("href","student_info.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "changeInfo"){
+                    $(this).attr("href","student_info_change.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toIndex"){
+                    $(this).attr("href","student_index.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "myTeacher"){
+                    $(this).attr("href","student_myteacher.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toFormula"){
+                    $(this).attr("href","student_formula.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toUnder"){
+                    $(this).attr("href","student_bk_choose.html"+"?numbers="+oneValues());
+                }
+              
+            })
+		})
+	</script>
+</body>
+</html>

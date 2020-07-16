@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>导师双向选择系统</title>
+    <link href="../lib/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        h1{
+            margin: 20px 50px 10px 20px;
+        }
+        #pname{
+            margin-top:25px;
+            margin-right: 50px;
+            font-size: 18px;
+        }
+        #pbtn{
+            margin-top:10px;
+            margin-right: 10px;
+        }
+        #nav_font{
+            font-size: 17px;
+            font-weight:600;
+        }
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            margin-bottom: 60px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            background-color: #f5f5f5;
+        }
+ 
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="navbar-header">
+            <h1>导师双向选择系统</h1>
+        </div>
+        
+        <div class="navbar-right" id="pbtn">
+            <input type="button" class="btn btn-default" value="退出" id="pbtn">
+        </div>
+
+        <div class="navbar-right" id="pname">
+            <p id="uName" style="font-size:18px"></p>
+            <form id="nameForm">
+                <input type="hidden" name="uid" id="uUid">
+            </form>
+        </div>
+  
+    </nav>
+    <div class="container">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand">选项</a>
+                </div>
+                <div id="nav_font">
+                    <ul class=" nav navbar-nav" id="mytab">
+                    
+                        <li ><a href="javascript:;" class="jump" var="toIndex">首页</a></li>
+                        <li ><a href="javascript:;" class="jump" var="myStudent">我的学生</a></li>
+                        <li ><a href="javascript:;" class="jump" var="toFormula">公示信息</a></li>
+
+                        <li><a href="javascript:;" class="jump" var="toChoose">学生选择</a></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                个人信息
+                                <span class=" caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li> <a href="javascript:;" class="jump" var="toFind"> 查询信息</a></li>
+                                <li class="divider"></li>
+                                <li> <a href="javascript:;" class="jump" var="toChange"> 修改信息</a></li>
+                                <li class="divider"></li>
+                                <li data-toggle="modal" data-target="#myModal"> <a href="#"> 修改密码</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>   
+        </nav>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="form" aria-labelledby="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="header" style="background-color: #4682B4;height: 50px;">
+                    <button type="button" class="close btn-warning" data-dismiss="modal" aria-hidden="true" style="color: white;">
+                        &times;
+                    </button>
+                    <h2 class="modal-title text-center" id="myModalLabel" style="color: white;">
+                        修改密码
+                    </h2>
+                </div>
+                <div class="modal-body">
+                    <form id="updateform">
+                        <div class=" form-group">
+                            <label for="prepass" class=" control-label">旧密码：</label>
+                            <input type="password" class=" form-control" id="prepass" name="prepass">
+                        </div>
+                        <div class=" form-group">
+                            <label for="newpass" class=" control-label">新密码：</label>
+                            <input type="password" class=" form-control" id="newpass" name="newpass">
+                        </div>
+                        <div class=" form-group">
+                            <label for="repeatpass" class=" control-label">重复密码：</label>
+                            <input type="password" class=" form-control" id="repeatpass" name="repeatpass">
+                        </div>
+                        <div class="row">
+                            <span id="returnMessage" class="glyphicon col-lg-6 text-danger"></span>
+                            <button type="button" class="btn btn-default right col-lg-offset-3" data-dismiss="modal">关闭</button>
+                            <button id="submitBtn" type="button" class="btn btn-primary">修改</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class=" row">
+            <div class=" jumbotron">
+                <h2 style="text-align: center;"><b>通知</b></h2><br>
+                <div class="row" style="font-size: 20px;">
+                    <label class="col-md-3 col-md-offset-2">第一轮导师选择时间：</label>
+                    <p id="firstStartTime" class="col-md-2"></p>
+                    <label class="col-md-1">至</label>
+                    <p id="firstEndTime" class="col-md-2"></p>
+                </div>
+                <br>
+                <div class="row" style="font-size: 20px;">
+                    <label class="col-md-3 col-md-offset-2">第二轮导师选择时间：</label>
+                    <p id="secondStartTime" class="col-md-2"></p>
+                    <label class="col-md-1">至</label>
+                    <p id="secondEndTime" class="col-md-2"></p>
+                </div>
+                <br>
+                <div class="row" style="font-size: 20px;">
+                    <label class="col-md-3 col-md-offset-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公示期时间：</label>
+                    <p id="formulaStartTime" class="col-md-2"></p>
+                    <label class="col-md-1">至</label>
+                    <p id="formulaEndTime" class="col-md-2"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer style="background-color:#4682B4; height: 40px;" class="footer">
+        <span>
+            <p class=" text-center" style="color: white;font-size: 17px;margin-top: 5px;">Copyright &nbsp;&copy; 2020</p>
+        </span>
+    </footer>
+
+
+    <script type="text/javascript" src="../lib/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+
+            function oneValues(){
+        		var result;
+        		var url=window.location.search; //获取url中"?"符后的字串  
+        		if(url.indexOf("?")!=-1){
+        			result = url.substr(url.indexOf("=")+1);
+        		}
+        		return result;
+        	}
+        	
+            $("#uName").html(oneValues());
+            $("#uUid").val(oneValues());
+
+            $.ajax({
+                type : "POST",
+                url : "../TeaServlet/time",       //获取时间的url
+                dataType : "json",
+                async : false,
+                success : function(res){
+                    console.log(res);
+                    $("#firstStartTime").html(res.oneStart);
+                    $("#firstEndTime").html(res.oneEnd);
+                    $("#secondStartTime").html(res.twoStart);
+                    $("#secondEndTime").html(res.twoEnd);
+                    $("#formulaStartTime").html(res.threeStart);
+                    $("#formulaEndTime").html(res.threeEnd);
+                }
+            })
+
+            $(".jump").on("click",function(){
+                var diff =$(this).attr("var");
+                if(diff == "toFind"){
+                    $(this).attr("href","teacher_info.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toChange"){
+                    $(this).attr("href","teacher_info_change.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toIndex"){
+                    $(this).attr("href","teacher_index.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "myStudent"){
+                    $(this).attr("href","teacher_mystudent.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toFormula"){
+                    $(this).attr("href","teacher_formula.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toChoose"){
+                    $(this).attr("href","teacher_choose.html"+"?numbers="+oneValues());
+                }
+            })
+
+            $("#submitBtn").click(function(){
+                if($("#newpass").val() != $("#repeatpass").val()){
+                    $("#returnMessage").text("重复密码不一致!")
+                }
+                else{
+                    if($("#newpass").val().length<6){
+                        $("#returnMessage").text("密码太简单！");
+                    }
+                    else{
+                        var datas = {
+                            "number" : oneValues(),
+                            "password" : $("#prepass").val(),
+                            "newpassword" : $("#newpass").val()
+                        }
+                        $.ajax({
+                            type : "POST",
+                            url : "../TeaServlet/updatePwd",
+                            data : datas,
+                            success : function(res){
+                                if(res.flag){
+                                    $("#returnMessage").text("修改密码成功！");
+                                }
+                                else{
+                                    $("#returnMessage").text("修改密码失败！");
+                                }
+                                console.log(res);
+                            },
+                            error : function(e){
+                                console.log(e);
+                            }
+                        })
+                    }
+                }
+            })
+
+            $("#pbtn").click(function(){
+                window.location.href="../index.html";
+            })
+        })
+        
+    </script>
+</body>
+</html>

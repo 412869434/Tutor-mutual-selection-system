@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>导师双向选择系统</title>
+    <link href="../lib/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        h1{
+            margin: 20px 50px 10px 20px;
+        }
+        #pname{
+            margin-top:25px;
+            margin-right: 50px;
+            font-size: 18px;
+        }
+        #pbtn{
+            margin-top:10px;
+            margin-right: 10px;
+        }
+        #nav_font{
+            font-size: 17px;
+            font-weight:600;
+        }
+        #body{
+            margin-bottom: 10px;
+            
+        }
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            margin-bottom: 60px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            background-color: #f5f5f5;
+        }
+
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="navbar-header">
+            <h1>导师双向选择系统</h1>
+        </div>
+        
+        <div class="navbar-right" id="pbtn">
+            <input type="button" class="btn btn-default" value="退出" id="pbtn">
+        </div>
+
+        <div class="navbar-right" id="pname">
+            <p id="uName" style="font-size:18px"></p>
+            <form id="nameForm">
+                <input type="hidden" name="uid" id="uUid">
+            </form>
+        </div>
+  
+    </nav>
+    <div class="container">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand">选项</a>
+                </div>
+                <div id="nav_font">
+                    <ul class=" nav navbar-nav" id="mytab">
+
+                        <li ><a href="javascript:;" class="jump" var="toIndex">首页</a></li>
+                        <li ><a href="javascript:;" class="jump" var="myTeacher">我的导师</a></li>
+                        <li ><a href="javascript:;" class="jump" var="toFormula">公示信息</a></li>
+
+                        <li ><a href="javascript:;" class="jump" var="toUnder"> 导师选择</a></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                个人信息
+                                <span class=" caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li> <a href="javascript:;" var="findInfo" class="jump"> 查询信息</a></li>
+                                <li class="divider"></li>
+                                <li> <a href="javascript:;" var="changeInfo" class="jump"> 修改信息</a></li>
+                                <li class="divider"></li>
+                                <li data-toggle="modal" data-target="#myModal"> <a href="#"> 修改密码</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>   
+        </nav>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="form" aria-labelledby="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="header" style="background-color: #4682B4;height: 50px;">
+                    <button type="button" class="close btn-warning" data-dismiss="modal" aria-hidden="true" style="color: white;">
+                        &times;
+                    </button>
+                    <h2 class="modal-title text-center" id="myModalLabel" style="color: white;">
+                        修改密码
+                    </h2>
+                </div>
+                <div class="modal-body">
+                    <form id="updatePwdForm">
+                        <div class=" form-group">
+                            <label for="prepass" class=" control-label">旧密码：</label>
+                            <input type="password" class=" form-control" id="prepass" name="prepass">
+                        </div>
+                        <div class=" form-group">
+                            <label for="newpass" class=" control-label">新密码：</label>
+                            <input type="password" class=" form-control" id="newpass" name="newpass">
+                        </div>
+                        <div class=" form-group">
+                            <label for="repeatpass" class=" control-label">重复密码：</label>
+                            <input type="password" class=" form-control" id="repeatpass" name="repeatpass">
+                        </div>
+                        <div class="row">
+                            <span id="returnMessage" class="glyphicon col-lg-6 text-danger"></span>
+                            <button type="button" class="btn btn-default right col-lg-offset-3" data-dismiss="modal">关闭</button>
+                            <button id="submitBtn" type="button" class="btn btn-primary">修改</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="mid">
+        <form role="form" id="updateForm">
+            <fieldset disabled>
+                <div class="form-group">
+                    <label for="name">姓名</label>
+                    <input type="text" class="form-control" id="_name" name="name"placeholder="姓名">
+                </div>
+                <div class="form-group">
+                    <label for="name">学号</label>
+                    <input type="text" class="form-control" id="_number" placeholder="学号" name="uid">
+                </div>
+            </fieldset>
+            
+            <div class="form-group">
+                <label for="name">专业方向</label>
+                <input type="text" class="form-control" id="_major" name="major">
+            </div>
+            <div class="form-group">
+                <label for="name">绩点</label>
+                <input type="text" class="form-control" id="_gpa" name="gpa">
+            </div>
+            <div class="form-group">
+                <label for="name">联系方式</label>
+                <input type="text" class="form-control" id="_phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="name">个人简介</label>
+                <textarea class="form-control" id="_introduce" name="introduce"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="name">专业特长</label>
+                <textarea class="form-control" id="_speciality" name="speciality"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="name">导师期望</label>
+                <textarea class="form-control" id="_expectation" name="expectation"></textarea>
+            </div>
+            <input type="submit" class="btn btn-primary pull-right" id="update"value="更新" style="width: 100px;height: 40px;font-size: 18px;">
+
+        </form>
+        <br><br>
+    </div>
+
+    
+    <footer style="background-color:#4682B4; height: 40px;" class="footer">
+        <span>
+            <p class=" text-center" style="color: white;font-size: 17px;margin-top: 5px;">Copyright &nbsp;&copy; 2020</p>
+        </span>
+    </footer>
+
+
+    <script type="text/javascript" src="../lib/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap.min.js"></script>
+
+    <script>
+       
+
+        $(document).ready(function(){
+            function oneValues(){
+                var result;
+                var url=window.location.search; //获取url中"?"符后的字串  
+                if(url.indexOf("?")!=-1){
+                    result = url.substr(url.indexOf("=")+1);
+                }
+                return result;
+            }
+        	
+        	$("#uName").html(oneValues());
+        	$("#uUid").val(oneValues());
+
+            $.ajax({
+            	type : "POST",
+            	url : "../StuServlet/findUser",
+                data : {"uid":oneValues()},
+                dataType : "json",
+                async : false,
+                success : function(res){
+                	console.log(typeof res);
+                	console.log(res.name);
+                	$("#_name").val(res.name);
+                    $("#_number").val(res.number);
+                    $("#_major").val(res.major);
+                    $("#_gpa").val(res.gpa);
+                    $("#_phone").val(res.phone);
+                    $("#_introduce").val(res.introduce);
+                    $("#_speciality").val(res.speciality);
+                    $("#_expectation").val(res.expectation);
+                    
+                },
+                error:function(e){
+                	console.log(e.statusText);
+                    console.log(e);
+                }
+                
+            })
+
+            $("#update").click(function(){
+            	
+            	var datass ={
+            			number : oneValues(),
+            			name : $("#_name").val(),
+            			major : $("#_major").val(),
+            			gpa : $("#_gpa").val(),
+            			phone : $("#_phone").val(),
+            			introduce : $("#_introduce").val(),
+            			speciality : $("#_speciality").val(),
+            			expectation : $("#_expectation").val(),
+            	}
+            	
+                $.ajax({
+                    type : "POST",
+                    url : "../StuServlet/updateUser",
+                    data : datass,
+                    success : function(res){
+                    	console.log(res);
+                        if(res.flag){
+                            alert("操作成功！");
+                            window.location.href="student_info_change.html"+"?numbers="+oneValues();
+                        }
+                        else{
+                            alert("操作失败！");
+                        }
+                        console.log(res);
+                    },
+                    error : function(e){
+                        console.log(e);
+                    }
+                }) 
+            })
+
+            $("#submitBtn").click(function(){
+                if($("#newpass").val() != $("#repeatpass").val()){
+                    $("#returnMessage").text("重复密码不一致!")
+                }
+                else{
+                	if($("#newpass").val().length<6){
+                        $("#returnMessage").text("密码太简单！");
+                    }
+                    else{
+                        var datas = {
+                            "number" : oneValues(),
+                            "password" : $("#prepass").val(),
+                            "newpassword" : $("#newpass").val()
+                        }
+                        $.ajax({
+                            type : "POST",
+                            url : "../StuServlet/updatePwd",
+                            data : datas,
+                            success : function(res){
+                                if(res.flag){
+                                    $("#returnMessage").text("修改密码成功！");
+                                }
+                                else{
+                                    $("#returnMessage").text("修改密码失败！");
+                                }
+                                console.log(res);
+                            },
+                            error : function(e){
+                                console.log(e);
+                            }
+                        })
+                    }      
+                }
+            })
+
+
+            $(".jump").on("click",function(){
+                var diff =$(this).attr("var");
+                if(diff == "findInfo"){
+                    $(this).attr("href","student_info.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "changeInfo"){
+                    $(this).attr("href","student_info_change.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toIndex"){
+                    $(this).attr("href","student_index.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "myTeacher"){
+                    $(this).attr("href","student_myteacher.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toFormula"){
+                    $(this).attr("href","student_formula.html"+"?numbers="+oneValues());
+                }
+                else if(diff == "toUnder"){
+                    $(this).attr("href","student_bk_choose.html"+"?numbers="+oneValues());
+                }
+            })
+
+            $("#pbtn").click(function(){
+                window.location.href="../index.html";
+            })
+        })
+        
+    </script>
+</body>
+</html>
